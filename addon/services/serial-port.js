@@ -1,28 +1,27 @@
 import Ember from 'ember';
+import SerialPort from '../utils/serial-port';
 
 const { Service, computed } = Ember;
 
 export default Service.extend({
   serialPortFactory: window.require("serialport"),
 
-  init() {
-    this.set('baudRate', 9600);
-    this.set('dataBits', 8);
-    this.set('stopBits', 1);
-    this.set('parity', 'none');
-    this.set('flowControl', false);
-    this.set('rtscts', false);
-    this.set('xon', false);
-    this.set('xoff', false);
-    this.set('xany', false);
-    this.set('hupcl', true);
-    this.set('rts', true);
-    this.set('cts', false);
-    this.set('dtr', true);
-    this.set('dts', false);
-    this.set('brk', false);
-    this.set('bufferSize', 255);
-  },
+  baudRate: 9600,
+  dataBits: 8,
+  stopBits: 1,
+  parity: none,
+  flowControl: false,
+  rtscts: false,
+  xon: false,
+  xoff: false,
+  xany: false,
+  hupcl: true,
+  rts: true,
+  cts: false,
+  dtr: true,
+  dts: false,
+  brk: false,
+  bufferSize: 255,
 
   openPorts: computed(() => {
     return {};

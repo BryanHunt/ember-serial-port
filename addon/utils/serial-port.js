@@ -10,6 +10,7 @@ const serialPortFactory = window.require("serialport");
 export default Ember.Object.extend({
 
   close() {
+    // TODO: unregister this port with the serial port service
     let driver = this.get('driver');
 
     return new Promise((resolve, reject) => {
@@ -24,17 +25,11 @@ export default Ember.Object.extend({
   },
 
   read(size) {
-    let driver = this.get('drive');
-    let buffer;
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      driver.on('data', function(){
-
-      });
-    });
-  },
-
-  readLine() {
-
+    // TODO: handle async update and clearing of buffer
+    // TODO: honor size param
+    let buffer = this.get('buffer');
+    this.set('buffer', []);
+    return buffer;
   },
 
   write(data) {
@@ -54,11 +49,15 @@ export default Ember.Object.extend({
 
 SerialPort.openClass({
   initialize(port, options) {
+    this.set('buffer', []);
+    let _this = this;
+
     return new Promise((resolve, reject) => {
       let serialPortDriver = new serialPortFactory.SerialPort(port, options, true, (err) => {
         if(err) {
           reject(err);
         } else {
+          serialPortDriver.on('data', (data) => _this.get('buffer').append(data));
           let serialPort = SerialPort.create({driver: serialPortDriver});
           resolve(serialPort);
         }
